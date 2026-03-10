@@ -21,8 +21,11 @@ app.get('/crearchat',validar , (req, res) => {
     })
 
 })
-app.get('/link/:id', async (req, res) => {
+
+app.get('/', async (req, res) => {
+    res.status(200).json({ status: true, message: "Sevidor Ejecutandose Correctamente" })
 })
+
 app.get('/conectar',validar , (req, res) => {
 
     conectar().then(ress => {
