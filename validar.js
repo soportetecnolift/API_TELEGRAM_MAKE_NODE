@@ -8,7 +8,7 @@ const apiHash = "e919c06befd94931fffaa3df25c275db";
 
 const stringSession = new StringSession(fs.readFileSync("session.txt", "utf8"));
 let client
-async function createGroup(stringSessionn = null , nombre= "", descripcion="") {
+async function createGroup(stringSessionn = null , nombre= "", descripcion="", detailsMessage = {}) {
     try {
         if(stringSessionn){
             client = new TelegramClient(stringSessionn, apiId, apiHash, {
@@ -44,7 +44,15 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="") {
         );
 
         const mensaje = await client.sendMessage(chat, {
-        message:"🏗 OBRA TL-2026-014 \n \n 👤Cliente: Juan Pérez \n 📱Teléfono: 600123456 \n 📌Dirección obra: Calle Mayor 14 Alicante \n 🎽Equipo: Aritco HomeLift \n #⃣Número de serie: AR-45872 \n 👨‍💻Comercial: Nacho \n 📅Fecha prevista instalación: 15 junio \n \n 🔗Enlace de Invitación del Grupo:" + invite.link
+        message:"🏗 OBRA "+detailsMessage.obra+
+        " \n \n 👤Cliente: "+detailsMessage.cliente+
+        " \n 📱Teléfono: "+detailsMessage.telefono+
+        " \n 📌Dirección obra: "+detailsMessage.dirObra+
+        " \n 🎽Equipo: "+detailsMessage.equipo+
+        " \n #⃣Número de serie: "+detailsMessage.numSerie+
+        " \n 👨‍💻Comercial: "+detailsMessage.comercial+
+        " \n 📅Fecha prevista instalación: "+detailsMessage.fecha_prevista+
+        " \n \n 🔗Enlace de Invitación del Grupo:" + invite.link
         })
         await client.invoke(
             new Api.messages.UpdatePinnedMessage({
@@ -56,24 +64,22 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="") {
         console.log("mesaje enviado y fijado")
         console.log("Link de invitación:", invite.link);
         console.log("Grupo creado:", chat);
-        return invite.link
-        /*const chat = result.chats[0];
         
-        // obtener usuario
-        const user = await client.getEntity("username_del_amigo");
         
         // invitar al grupo
-        const user = await client.getEntity("+573001234567");
+        const user = await client.getEntity("+34607330742");
 
-        await client.invoke(
+        const adddCLient = await client.invoke(
         new Api.channels.InviteToChannel({
             channel: chat,
             users: [user]
         })
         );
-        
-        console.log("Usuario añadido al grupo"); */
 
+        console.log(adddCLient)
+        
+        console.log("Usuario añadido al grupo"); 
+        return invite.link 
     } catch (error) {
         console.log(error);
         return error
