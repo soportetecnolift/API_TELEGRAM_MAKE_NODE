@@ -43,6 +43,17 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="") {
             })
         );
 
+        const mensaje = await client.sendMessage(chat, {
+        message:"🏗 OBRA TL-2026-014 \n \n 👤Cliente: Juan Pérez \n 📱Teléfono: 600123456 \n 📌Dirección obra: Calle Mayor 14 Alicante \n 🎽Equipo: Aritco HomeLift \n #⃣Número de serie: AR-45872 \n 👨‍💻Comercial: Nacho \n 📅Fecha prevista instalación: 15 junio \n \n 🔗Enlace de Invitación del Grupo:" + invite.link
+        })
+        await client.invoke(
+            new Api.messages.UpdatePinnedMessage({
+                silent: true,
+                peer: chat,
+                id: mensaje.id
+            })
+        )
+        console.log("mesaje enviado y fijado")
         console.log("Link de invitación:", invite.link);
         console.log("Grupo creado:", chat);
         return invite.link
