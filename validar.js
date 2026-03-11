@@ -48,7 +48,7 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
         " \n \n 👤Cliente: "+detailsMessage.cliente+
         " \n 📱Teléfono: "+detailsMessage.telefono+
         " \n 📌Dirección obra: "+detailsMessage.dirObra+
-        " \n 🎽Equipo: "+detailsMessage.equipo+
+        " \n ⚙Equipo: "+detailsMessage.equipo+
         " \n #⃣Número de serie: "+detailsMessage.numSerie+
         " \n 👨‍💻Comercial: "+detailsMessage.comercial+
         " \n 📅Fecha prevista instalación: "+detailsMessage.fecha_prevista+
@@ -67,7 +67,7 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
         
         
         // invitar al grupo
-        const user = await client.getEntity("+34607330742");
+        /*const user = await client.getEntity("+34607330742");
 
         const adddCLient = await client.invoke(
         new Api.channels.InviteToChannel({
@@ -78,7 +78,7 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
 
         console.log(adddCLient)
         
-        console.log("Usuario añadido al grupo"); 
+        console.log("Usuario añadido al grupo"); */
         return invite.link 
     } catch (error) {
         console.log(error);
