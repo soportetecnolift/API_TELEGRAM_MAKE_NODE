@@ -37,7 +37,6 @@ async function conectar() {
             onError: (err) => console.log(err),
         })
         fs.writeFileSync('session.txt', stringSession.save())
-        await client.start()
         console.log("Conectado perfectamente ")
         return stringSession
     } catch (error) {
