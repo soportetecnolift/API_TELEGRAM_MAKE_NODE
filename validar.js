@@ -1,29 +1,9 @@
-const { TelegramClient, Api } = require("telegram");
-const { StringSession } = require("telegram/sessions");
-const readline = require("readline");
-const fs = require("fs");
+const { Api } = require("telegram");
+const conectar = require('./index')
 
-const apiId = 37315121;
-const apiHash = "e919c06befd94931fffaa3df25c275db";
-
-const stringSession = new StringSession(fs.readFileSync("session.txt", "utf8"));
-let client
 async function createGroup(stringSessionn = null , nombre= "", descripcion="", detailsMessage = {}) {
     try {
-        if(stringSessionn){
-            client = new TelegramClient(stringSessionn, apiId, apiHash, {
-            connectionRetries: 5,
-            })
-        
-        }else{
-            client = new TelegramClient(stringSession, apiId, apiHash, {
-            connectionRetries: 5,
-            })
-        }
-        
-        
-
-        await client.start();
+        const client = await conectar()
 
         console.log("Sesión reusada, ya autenticado");
 
@@ -66,10 +46,10 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
                 id: mensaje.id
             })
         )
-        console.log("mesaje enviado y fijado")
-        console.log("Link de invitación:", invite.link);
-        console.log("Grupo creado:", chat);
-        
+        //console.log("mesaje enviado y fijado")
+        //console.log("Link de invitación:", invite.link);
+        //console.log("Grupo creado:", chat);
+        console.log("Grupo crado correctamente: " + nombre + " - " + invite.link )
         
         // invitar al grupo
         /*const user = await client.getEntity("+34607330742");

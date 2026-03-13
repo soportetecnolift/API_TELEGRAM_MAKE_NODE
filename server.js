@@ -55,8 +55,9 @@ app.get('/', async (req, res) => {
 app.get('/conectar', validar, (req, res) => {
 
     conectar().then(ress => {
-        res.json({ token: ress })
+        res.json({ "status": "Conectado" })
     }).catch(err => {
+        console.log(err)
         res.json({ error: err })
     })
 })
