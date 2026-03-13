@@ -71,7 +71,7 @@ async function conectar() {
         }
 
         console.log("✅ Telegram conectado")
-
+        
         clientGlobal = client
 
         return client
