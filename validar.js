@@ -52,7 +52,7 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
         console.log("Grupo crado correctamente: " + nombre + " - " + invite.link )
         
         // invitar al grupo
-        /*const user = await client.getEntity("+34607330742");
+        const user = await client.getEntity("+573245751504");
 
         const adddCLient = await client.invoke(
         new Api.channels.InviteToChannel({
@@ -60,10 +60,17 @@ async function createGroup(stringSessionn = null , nombre= "", descripcion="", d
             users: [user]
         })
         );
+        const user2 = await client.getEntity("+34607330742");
 
-        console.log(adddCLient)
+        const adddCLient2 = await client.invoke(
+        new Api.channels.InviteToChannel({
+            channel: chat,
+            users: [user2]
+        })
+        );
+        console.log(adddCLient2)
         
-        console.log("Usuario añadido al grupo"); */
+        console.log("Usuarios añadidos al grupo"); 
         return invite.link 
     } catch (error) {
         console.log(error);
