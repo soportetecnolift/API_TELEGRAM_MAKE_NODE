@@ -4,8 +4,25 @@ const cors = require('cors')
 const conectar = require('./index')
 const createGroup = require('./validar')
 const { validar } = require('./middelware')
+const conect = require("./conexion")
+const enviarCambio = require('./enviarCambio')
+conect()
 app.use(express.json())
-
+app.get('/newmessage', async (req, res) => {
+    const { text = null, link = null } = req.body
+    try {
+        enviarCambio(text, link)
+            .then(ress => {
+                if(ress == "TRUE")return res.status(200).json({ status: true, message: "Mensaje Enviado" })
+                return res.status(200).json({ status: true, message: "Chat no Encontrado" })
+            })
+            .catch(err => {
+                return res.status(500).json({ status: true, message: "f-Error Interno: " + err })
+            })
+    } catch (e) {
+        return res.status(500).json({ status: true, message: "Error Interno:  " + e })
+    }
+})
 
 app.get('/crearchat', validar, (req, res) => {
 
@@ -31,14 +48,14 @@ app.get('/crearchat', validar, (req, res) => {
         nombre,
         descripcion,
         DetailsMessage = {
-            obra : obra,
-            cliente : cliente,
-            telefono : telefono,
-            dirObra : dirObra,
-            equipo : equipo,
-            numSerie :  numSerie,
-            comercial : comercial,
-            fecha_prevista : fecha_prevista
+            obra: obra,
+            cliente: cliente,
+            telefono: telefono,
+            dirObra: dirObra,
+            equipo: equipo,
+            numSerie: numSerie,
+            comercial: comercial,
+            fecha_prevista: fecha_prevista
         }
     ).then(ress => {
         res.status(200).json({ status: true, res: ress })
