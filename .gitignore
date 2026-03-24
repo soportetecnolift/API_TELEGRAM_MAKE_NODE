@@ -1,6 +1,4 @@
 node_modules/
 .env
-chat.json
+session.txt
 guardarchat.js
-session.txt
-session.txt

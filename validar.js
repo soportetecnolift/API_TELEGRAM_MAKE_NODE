@@ -53,7 +53,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
         //console.log("Grupo creado:", chat);
         console.log("Grupo crado correctamente: " + nombre + " - " + invite.link)
 
-        /*// invitar al grupo
+        //invitar al grupo
          const user = await client.getEntity("+573245751504");
  
          const adddCLient = await client.invoke(
@@ -70,7 +70,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
              users: [user2]
          })
          );
-         console.log(adddCLient2)*/
+         console.log(adddCLient2)
 
         //console.log("Usuarios añadidos al grupo");
         try {
