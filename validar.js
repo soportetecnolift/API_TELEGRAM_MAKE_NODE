@@ -72,6 +72,16 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
          );
          console.log(adddCLient2)
 
+         const user3 = await client.getEntity("@TecnoliftAM_bot");
+ 
+         const adddCLient3 = await client.invoke(
+         new Api.channels.InviteToChannel({
+             channel: chat,
+             users: [user3]
+         })
+         );
+         console.log(adddCLient3)
+
         //console.log("Usuarios añadidos al grupo");
         try {
             const chatLimpio = {
@@ -89,7 +99,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
             console.log(error)
         }
 
-        return invite.link
+        return { link: invite.link, id: chat.id.value.toString(), accessHash: chat.accessHash.value.toString(), title: chat.title };
     } catch (error) {
         console.log(error);
         return error
