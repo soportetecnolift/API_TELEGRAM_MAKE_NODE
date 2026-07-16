@@ -6,6 +6,7 @@ const createGroup = require('./validar')
 const { validar } = require('./middelware')
 const conect = require("./conexion")
 const enviarCambio = require('./enviarCambio')
+const consultarNumero = require('./consultarNumero')
 conect()
 app.use(express.json())
 app.get('/newmessage', async (req, res) => {
@@ -24,6 +25,20 @@ app.get('/newmessage', async (req, res) => {
     }
 })
 
+
+app.get('/consultarnumero', validar, (req, res) => {
+    try {
+        consultarNumero()
+            .then(ress => {
+                return res.status(200).json({ status: true, data: ress })
+            })
+            .catch(err => {
+                return res.status(500).json({ status: false, message: "Error Interno: " + err })
+            })
+    } catch (e) {
+        return res.status(500).json({ status: false, message: "Error Interno: " + e })
+    }
+})
 app.get('/crearchat', validar, (req, res) => {
 
     const {
