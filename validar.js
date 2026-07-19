@@ -72,15 +72,15 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
          );
          console.log(adddCLient2)
 
-         const user3 = await client.getEntity("@TecnoliftAM_bot");
+         //const user3 = await client.getEntity("@TecnoliftAM_bot");
  
-         const adddCLient3 = await client.invoke(
-         new Api.channels.InviteToChannel({
-             channel: chat,
-             users: [user3]
-         })
-         );
-         console.log(adddCLient3)
+         //const adddCLient3 = await client.invoke(
+         //new Api.channels.InviteToChannel({
+           //  channel: chat,
+             //users: [user3]
+         //})
+         //);
+         //console.log(adddCLient3)
 
         //console.log("Usuarios añadidos al grupo");
         try {
