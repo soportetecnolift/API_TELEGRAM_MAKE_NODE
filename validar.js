@@ -3,7 +3,7 @@ const conectar = require('./index');
 const Chat = require("./chat");
 
 
-async function createGroup(stringSessionn = null, nombre = "", descripcion = "", detailsMessage = {}) {
+async function createGroup(stringSessionn = null, nombre = "", descripcion = "", detailsMessage = {}, numeroComercial = "") {
     try {
         const client = await conectar()
 
@@ -52,46 +52,56 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
         //console.log("Link de invitación:", invite.link);
         //console.log("Grupo creado:", chat);
         console.log("Grupo crado correctamente: " + nombre + " - " + invite.link)
-
+        
         //invitar al grupo
-         const user = await client.getEntity("+573245751504");
- 
-         const adddCLient = await client.invoke(
-         new Api.channels.InviteToChannel({
-             channel: chat,
-             users: [user]
-         })
-         );
-         const user2 = await client.getEntity("+34607330742");
- 
-         const adddCLient2 = await client.invoke(
-         new Api.channels.InviteToChannel({
-             channel: chat,
-             users: [user2]
-         })
-         );
-         console.log(adddCLient2)
+        const user = await client.getEntity("+573245751504");
 
-         const user3 = await client.getEntity("@TecnoliftoBot");
- 
-         const adddCLient3 = await client.invoke(
-         new Api.channels.InviteToChannel({
-            channel: chat,
-            users: [user3]
-         })
-         );
-         console.log(adddCLient3)
+        const adddCLient = await client.invoke(
+            new Api.channels.InviteToChannel({
+                channel: chat,
+                users: [user]
+            })
+        );
+        const user2 = await client.getEntity("+34607330742");
 
-         const user4 = await client.getEntity("+34672686620");
- 
-         const adddCLient4 = await client.invoke(
-         new Api.channels.InviteToChannel({
-            channel: chat,
-            users: [user4]
-         })
-         );
-         console.log(adddCLient4)
+        const adddCLient2 = await client.invoke(
+            new Api.channels.InviteToChannel({
+                channel: chat,
+                users: [user2]
+            })
+        );
+        console.log(adddCLient2)
 
+        const user3 = await client.getEntity("@TecnoliftoBot");
+
+        const adddCLient3 = await client.invoke(
+            new Api.channels.InviteToChannel({
+                channel: chat,
+                users: [user3]
+            })
+        );
+        console.log(adddCLient3)
+
+        const user4 = await client.getEntity("+34672686620");
+
+        const adddCLient4 = await client.invoke(
+            new Api.channels.InviteToChannel({
+                channel: chat,
+                users: [user4]
+            })
+        );
+        console.log(adddCLient4)
+
+        if (numeroComercial !== "") {
+            const user5 = await client.getEntity(numeroComercial);
+            const adddCLient5 = await client.invoke(
+                new Api.channels.InviteToChannel({
+                    channel: chat,
+                    users: [user5]
+                })
+            );
+            console.log(adddCLient5)
+        }
         //console.log("Usuarios añadidos al grupo");
         try {
             const chatLimpio = {

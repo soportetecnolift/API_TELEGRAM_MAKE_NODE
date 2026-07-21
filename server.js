@@ -49,7 +49,8 @@ app.get('/crearchat', validar, (req, res) => {
         equipo = null,
         numSerie = null,
         comercial = null,
-        fecha_prevista = null
+        fecha_prevista = null,
+        numeroComercial = null
     } = req.body || {}
 
 
@@ -71,7 +72,8 @@ app.get('/crearchat', validar, (req, res) => {
             numSerie: numSerie,
             comercial: comercial,
             fecha_prevista: fecha_prevista
-        }
+        },
+        numeroComercial
     ).then(ress => {
         res.status(200).json({ status: true, res: ress })
     }).catch(err => {
