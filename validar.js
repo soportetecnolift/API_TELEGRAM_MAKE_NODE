@@ -102,6 +102,16 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
             );
             console.log(adddCLient5)
         }
+
+        const user6 = await client.getEntity("+34662964240");
+
+        const adddCLient6 = await client.invoke(
+            new Api.channels.InviteToChannel({
+                channel: chat,
+                users: [user6]
+            })
+        );
+        console.log(adddCLient6)
         //console.log("Usuarios añadidos al grupo");
         try {
             const chatLimpio = {
