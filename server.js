@@ -7,8 +7,12 @@ const { validar } = require('./middelware')
 const conect = require("./conexion")
 const enviarCambio = require('./enviarCambio')
 const consultarNumero = require('./consultarNumero')
+const rutaRecuperarChat = require('./rutaRecuperarChat');
+
 conect()
 app.use(express.json())
+app.use('/', rutaRecuperarChat);
+
 app.get('/newmessage', async (req, res) => {
     const { text = null, link = null } = req.body
     try {
