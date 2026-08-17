@@ -166,6 +166,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
                         other: true
                     }),
                     rank: "Admin" 
+                    
                 })
             );
             console.log(setAdmin);
