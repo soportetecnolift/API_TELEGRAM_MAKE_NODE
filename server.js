@@ -6,7 +6,7 @@ const createGroup = require('./validar')
 const { validar } = require('./middelware')
 const conect = require("./conexion")
 const enviarCambio = require('./enviarCambio')
-const actualizacionMasiva = require("./actualizacionMasiva")
+//const actualizacionMasiva = require("./actualizacionMasiva")
 const consultarNumero = require('./consultarNumero')
 const rutaRecuperarChat = require('./rutaRecuperarChat');
 
@@ -29,7 +29,7 @@ app.get('/newmessage', async (req, res) => {
         return res.status(500).json({ status: true, message: "Error Interno:  " + e })
     }
 })
-
+/*
 app.get('/unirse', async (req, res) => {
     const { text = null, link = null } = req.body
     try {
@@ -45,7 +45,7 @@ app.get('/unirse', async (req, res) => {
         return res.status(500).json({ status: true, message: "Error Interno:  " + e })
     }
 })
-
+*/
 app.get('/consultarnumero', validar, (req, res) => {
     try {
         consultarNumero()
