@@ -88,7 +88,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
                 })
             );
             console.log(adddCLient2)
-
+            /*
             const user3 = await client.getEntity("@TecnoliftoBot");
 
             const adddCLient3 = await client.invoke(
@@ -98,7 +98,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
                 })
             );
             console.log(adddCLient3)
-
+*/
             //paquito
             const user4 = await client.getEntity("+34672686620");
 
@@ -166,7 +166,7 @@ async function createGroup(stringSessionn = null, nombre = "", descripcion = "",
                         other: true
                     }),
                     rank: "Admin" 
-                    
+
                 })
             );
             console.log(setAdmin);
