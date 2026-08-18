@@ -6,6 +6,7 @@ const createGroup = require('./validar')
 const { validar } = require('./middelware')
 const conect = require("./conexion")
 const enviarCambio = require('./enviarCambio')
+const actualizacionMasiva = require("./actualizacionMasiva")
 const consultarNumero = require('./consultarNumero')
 const rutaRecuperarChat = require('./rutaRecuperarChat');
 
@@ -29,6 +30,21 @@ app.get('/newmessage', async (req, res) => {
     }
 })
 
+app.get('/unirse', async (req, res) => {
+    const { text = null, link = null } = req.body
+    try {
+        actualizacionMasiva(text, link)
+            .then(ress => {
+                if(ress == "TRUE")return res.status(200).json({ status: true, message: "Mensaje Enviado" })
+                return res.status(200).json({ status: true, message: "Chat no Encontrado" })
+            })
+            .catch(err => {
+                return res.status(500).json({ status: true, message: "f-Error Interno: " + err })
+            })
+    } catch (e) {
+        return res.status(500).json({ status: true, message: "Error Interno:  " + e })
+    }
+})
 
 app.get('/consultarnumero', validar, (req, res) => {
     try {

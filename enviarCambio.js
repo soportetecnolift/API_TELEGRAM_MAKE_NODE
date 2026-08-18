@@ -13,77 +13,94 @@ async function unirseAlChat(client, link) {
         throw new Error("No se pudo extraer el hash de invitación del link: " + link);
     }
 
-    // Primero comprobamos el estado del invite sin unirnos todavía
     const check = await client.invoke(
         new Api.messages.CheckChatInvite({ hash })
     );
 
     if (check instanceof Api.ChatInviteAlready) {
-        // Ya somos participantes: el chat viene incluido directamente
         return check.chat;
     }
 
-    // No somos miembros aún: nos unimos
     const result = await client.invoke(
         new Api.messages.ImportChatInvite({ hash })
     );
     return result.chats[0];
 }
 
+async function fijarMensaje(client, peer, mensajeId, referencia) {
+    try {
+        await client.invoke(
+            new Api.messages.UpdatePinnedMessage({
+                silent: true,
+                peer,
+                id: mensajeId
+            })
+        );
+    } catch (pinError) {
+        if (pinError.errorMessage === "CHAT_ADMIN_REQUIRED") {
+            console.log(`Aviso: no se pudo fijar el mensaje en "${referencia}" (la cuenta no es admin). Mensaje enviado igualmente.`);
+        } else {
+            console.log("Error al intentar fijar el mensaje:", pinError);
+        }
+    }
+}
+
+async function resolverYEnviar(client, link, textMessage) {
+    // Re-resuelve por invite link (uniéndose si hace falta) y guarda datos frescos
+    const chatEntity = await unirseAlChat(client, link);
+    console.log(chatEntity);
+
+    const peer = new Api.InputPeerChannel({
+        channelId: BigInt(chatEntity.id.toString()),
+        accessHash: BigInt(chatEntity.accessHash.toString())
+    });
+    const mensaje = await client.sendMessage(peer, { message: textMessage });
+    await fijarMensaje(client, peer, mensaje.id, chatEntity.title || link);
+
+    await Chat.updateOne(
+        { link },
+        {
+            $set: {
+                "chat.id": chatEntity.id.toString(),
+                "chat.accessHash": chatEntity.accessHash.toString(),
+                "chat.title": chatEntity.title
+            }
+        },
+        { upsert: true } // por si el documento todavía no existía
+    );
+}
+
 async function enviarCambio(textMessage = "", link = "") {
     try {
         const client = await conectar();
-
         const data = await Chat.findOne({ link });
-
-        if (!data) {
-            throw new Error("Chat no encontrado");
-        }
-
         console.log(data);
 
-        const chatEntity = await unirseAlChat(client, link);
-
-        const peer = new Api.InputPeerChannel({
-            channelId: BigInt(chatEntity.id.toString()),
-            accessHash: BigInt(chatEntity.accessHash.toString())
-        });
-
-        const mensaje = await client.sendMessage(peer, {
-            message: textMessage
-        });
-
-        try {
-            await client.invoke(
-                new Api.messages.UpdatePinnedMessage({
-                    silent: true,
-                    peer: peer,
-                    id: mensaje.id
-                })
-            );
-        } catch (pinError) {
-            if (pinError.errorMessage === "CHAT_ADMIN_REQUIRED") {
-                console.log(`Aviso: no se pudo fijar el mensaje en "${chatEntity.title || link}" (la cuenta no es admin). Mensaje enviado igualmente.`);
-            } else {
-                console.log("Error al intentar fijar el mensaje:", pinError);
+        if (data) {
+            // Camino rápido: probamos con lo que ya está guardado
+            try {
+                const peer = new Api.InputPeerChannel({
+                    channelId: BigInt(data.chat.id),
+                    accessHash: BigInt(data.chat.accessHash)
+                });
+                const mensaje = await client.sendMessage(peer, { message: textMessage });
+                await fijarMensaje(client, peer, mensaje.id, data.chat.title || link);
+                return true;
+            } catch (err) {
+                if (err.errorMessage !== "CHANNEL_INVALID" && err.errorMessage !== "CHANNEL_PRIVATE") {
+                    throw err; // otro tipo de error, no lo tapamos con el fallback
+                }
+                console.log(`accessHash guardado ya no sirve para "${link}" (${err.errorMessage}), re-resolviendo por invite link...`);
             }
         }
 
-        await Chat.updateOne(
-            { link },
-            {
-                $set: {
-                    "chat.id": chatEntity.id.toString(),
-                    "chat.accessHash": chatEntity.accessHash.toString()
-                }
-            }
-        );
-
+        // Sin registro, o el cacheado quedó inválido: resolvemos desde cero
+        await resolverYEnviar(client, link, textMessage);
         return "TRUE";
 
     } catch (error) {
-        console.log(error);
-        return error;
+        console.error("enviarCambio falló:", error);
+        throw error;
     }
 }
 
